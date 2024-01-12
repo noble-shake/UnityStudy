@@ -13,13 +13,14 @@ public class Study240112 : MonoBehaviour
      */
 
     int global_int = 10;
+    bool default_check; // default bool variable check. it was false.
     // Start is called before the first frame update
     void Start()
     {
-        int iBox = 0;
-        float fBox = 0f;
-        string sBox = "null";
-        bool bBox = false;  // default is false.
+        //int iBox = 0;
+        //float fBox = 0f;
+        //string sBox = "null";
+        //bool bBox = false;
 
         int a = 7;
         int b = a;
@@ -36,6 +37,8 @@ public class Study240112 : MonoBehaviour
         condition_compare(11);
         condition_compare(9);
         condition_compare(0);
+
+        condition_test(default_check);
     }
 
     private void def_test()
@@ -67,7 +70,7 @@ public class Study240112 : MonoBehaviour
         {
             Debug.Log($"condition value is {val} larger or same");
         }
-        else if (val <= 10)
+        else if (val <= 10)                
         {
             Debug.Log($"condition value is {val} lower or same");
         }
