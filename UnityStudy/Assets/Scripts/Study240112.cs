@@ -31,6 +31,10 @@ public class Study240112 : MonoBehaviour
         def_test();
         condition_test(true);
         condition_test(false);
+        condition_compare(10);
+        condition_compare(11);
+        condition_compare(9);
+        condition_compare(0);
     }
 
     private void def_test()
@@ -48,4 +52,27 @@ public class Study240112 : MonoBehaviour
             Debug.Log($"condition is {condtion}");
         }
     }
+
+    private void condition_compare(int val) {
+        if (val > 10)
+        {
+            Debug.Log($"condition value is {val} larger than");
+        }
+        else if (val < 10)
+        {
+            Debug.Log($"condition value is {val} lower than");
+        }
+        else if (val >= 10)
+        {
+            Debug.Log($"condition value is {val} larger or same");
+        }
+        else if (val <= 10)
+        {
+            Debug.Log($"condition value is {val} lower or same");
+        }
+        else {
+            Debug.Log($"condition excepted");
+        }
+    }
+
 }
