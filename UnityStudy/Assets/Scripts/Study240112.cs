@@ -9,6 +9,7 @@ public class Study240112 : MonoBehaviour
      * [LEARNED] local variable and global variable description.
      * [LEARNED] previous and after value change operator c++ /  ++c ...
      * [LEARNED] if ~ else if, condtion.  >, <, >=, <=, ==, !
+     * [LEARNED] and (&&), or (||)
      */
 
     int global_int = 10;
