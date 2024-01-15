@@ -14,7 +14,7 @@ public class Study240115 : MonoBehaviour
      * [LEARNED] simply public / private 
      * [LEARNED] += / -= / *= operator.
      * [LEARNED] swich expression.
-     * [PROBLEM] Manage Grade Using Switch and if ~ else
+     * [PROBLEM] Manage Grade using Switch and if ~ else
      * [LEARNED] for iteration.
      */
 
