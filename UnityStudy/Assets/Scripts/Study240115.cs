@@ -19,7 +19,7 @@ public class Study240115 : MonoBehaviour
      */
 
     public int iNum = 0;
-    private int iGold= 0;
+    // private int iGold= 0;
     private void Start()
     {
         int iNum = 187;
