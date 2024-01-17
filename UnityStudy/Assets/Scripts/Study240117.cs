@@ -22,7 +22,7 @@ public class Study240117 : MonoBehaviour
         // Condition : blank "  ", Star "¡Ù"
         Debug.Log("[PROBLEM 1] make a star Pyramid. using for");
         string star = "¡Ù";
-        string blank = "  ";
+        string blank = "¡¡";
         
         string s1Value = "";
         string total1Value = "";
@@ -54,8 +54,8 @@ public class Study240117 : MonoBehaviour
         string total3Value = "";
         for (int iNum = 0; iNum < 5; iNum++) {
             string bValue = "";
-            for (int ibNum = 4 - iNum; ibNum > 0; ibNum--) {
-                bValue += blank + blank;
+            for (int ibNum = 5 - iNum -1; ibNum > 0; ibNum--) {
+                bValue += blank;
             }
             s3Value += star;
             total3Value += bValue + s3Value + "\n";
@@ -76,7 +76,7 @@ public class Study240117 : MonoBehaviour
             string bValue = "";
             for (int ibNum = 5 - iNum; ibNum > 0; ibNum--)
             {
-                bValue += blank + blank;
+                bValue += blank;
             }
             total4Value += bValue + s4Value + "\n";
         }
