@@ -9,10 +9,12 @@ UnityStudy
 
 [Note with Google Docs](https://docs.google.com/document/d/1YcEMUSOiGZ3VWBnxACj-89cpp5gdUT2Zr7MXENDMmkU/edit?usp=sharing)
 
- ~ 2024-01-11
+ 2024-01-11 
 
-basic script / variable
+basic script 
+variable
+operators 
+debugging
+if ~ else
+for / while loop
 
-2024-01-12
-
-operators / debugging
