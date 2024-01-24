@@ -1,12 +1,9 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
 
-public class Study240122 : MonoBehaviour
+public class Study240123 : MonoBehaviour
 {
     /*
      * 2024-01-22 unity class
@@ -24,8 +21,8 @@ public class Study240122 : MonoBehaviour
         arrIntVal[4] = 10;
 
         int[] arrIntVal2 = new int[5] { 1, 2, 3, 4, 5 };
-        int[] arrIntEmptyVal = null; // reference data
-        arrIntEmptyVal[0] = 10;
+        // int[] arrIntEmptyVal = null; // reference data
+        // arrIntEmptyVal[0] = 10;
 
         int[] extendValue = new int[3] { 1, 2, 3 };
         extendValue = new int[5]; // 1, 2, 3, 0, 0
@@ -33,7 +30,7 @@ public class Study240122 : MonoBehaviour
 
         // [PROBLEM]
         int[] arrExam = null;
-        arrExam = arrExtentionFunction(arrEaxm, 3);
+        arrExam = arrExtentionFunction(arrExam, 3);
     }
 
     private void intArray(int[] _value) {
