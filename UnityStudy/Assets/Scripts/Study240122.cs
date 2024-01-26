@@ -40,7 +40,7 @@ public class Study240122 : MonoBehaviour
         int p = value._plus;
         Debug.Log($"{value._multi}");
 
-        var varValue1 = 0; // defined in  compiler process
+        var varValue1 = 0; // defined in  compiler process  
         var varValue2 = someFunction(1, 2);
 
         // blue -> call by value (CBV -> for keeping value invariant), more than more copy value, memory consumption increased.
