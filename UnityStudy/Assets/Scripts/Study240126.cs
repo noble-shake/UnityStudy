@@ -15,6 +15,8 @@ public class Study240126 : MonoBehaviour
      * [LEARNED] List's Swallow Copy / Deep Copy.
      * [PROBLEM] Make Function with List Parameter. Conditioned by over 90. return new List.
      * [LEARNED] Lambda Expression
+     * [LEANRED] Debug.Log input paramas(int, float, ...) directly logged.
+     * [LEARNED] if input paramas's state is unclear, it will logged params type and address.
      * 
      * List.FindAll 입력으로는 predicate delegate function을 입력으로 받고 있어서,
      * Lambda Expression을 통해서 쉽게 값을 바꿀 수 있음.
