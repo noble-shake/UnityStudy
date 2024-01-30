@@ -21,7 +21,7 @@ public class Study240129 : MonoBehaviour
      * Inspector - Unity Engine / Designer / PM workspace
      * Priority higher than Script
      */
-    [SerializeField] private Monster monClass; 
+    [SerializeField] public Monster monClass; 
     [SerializeField] private List<int> sList; // dynamically allocated in inspector
     public List<int> publicList;
 
@@ -108,7 +108,7 @@ public class Study240129 : MonoBehaviour
 
     // serialization will be edited in inspector bar.
     [System.Serializable]
-    private class Monster {
+    public class Monster {
         public float hp;
         public float damage;
         public float defence;
