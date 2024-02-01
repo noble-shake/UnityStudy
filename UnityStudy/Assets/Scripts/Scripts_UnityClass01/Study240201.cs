@@ -17,7 +17,6 @@ public class Study240201 : MonoBehaviour
      * 
      */
 
-
     private void Start()
     {
         float timing = Time.deltaTime; // previous after frame - current frame error value. it designed almost 1, if 1seconds. (not same 1)
