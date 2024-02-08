@@ -105,7 +105,6 @@ public class GroundManager : MonoBehaviour
 
         //mathf -> C#
         //Mathf -> Unity
-
         vecBottom.y = Mathf.Repeat(vecBottom.y, 1.0f);
         vecMiddle.y = Mathf.Repeat(vecMiddle.y, 1.0f);
         vecTop.y = Mathf.Repeat(vecTop.y, 1.0f);
