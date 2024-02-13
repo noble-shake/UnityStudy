@@ -866,4 +866,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fadfec20ccb3b145af6651de766062d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 5
+  cam: {fileID: 1602810488}
+  minScreen: {x: 0.1, y: 0.15}
+  maxScreen: {x: 0.9, y: 0.95}
