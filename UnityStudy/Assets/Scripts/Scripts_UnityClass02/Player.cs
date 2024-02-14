@@ -9,14 +9,22 @@ public class Player : MonoBehaviour
     // [LEARNED] Animation Description. Finite State Machine.
     // [LEARNED] Input Methods
     // [LEARNED] Movemant Player
+    [Header("Parameters")]
     [SerializeField] float speed;
     [SerializeField] Camera cam;
-
-    [SerializeField] Vector2 minScreen;
-    [SerializeField] Vector2 maxScreen;
+    [Space]
+    [Header("Border Limit")]
+    [SerializeField][Tooltip("Min Border")] Vector2 minScreen;
+    [SerializeField] [Tooltip("Max Border")] Vector2 maxScreen;
+    [Space]
+    [Header("External Prefabs")]
+    [SerializeField] GameObject fabMissile;
 
     Animator anim;
     Vector2 moveDir;
+
+    [Space]
+    [SerializeField] Transform trsShootPoint;
 
     void Start()
     {
@@ -28,6 +36,26 @@ public class Player : MonoBehaviour
         moving();   // Ctrl + '.' -> automatically Definition Generate.     
         checkMovePostion();
         animating();
+        checkShootMissile();
+    }
+
+    /// <summary>
+    /// Player Shoot Missile Script
+    /// </summary>
+    private void checkShootMissile()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            createMissile(trsShootPoint.position, Vector3.zero);
+        }
+    }
+
+    private void createMissile(Vector3 _pos, Vector3 _rot) {
+        // Resources folder support in Unity Engine from naming Resources.
+        // above methods not recommended..
+        // GameObject goMissile = Resources.Load<GameObject>("File/FabMissile");
+        Instantiate(fabMissile, _pos, Quaternion.Euler(_rot));
+        //Global Position, Local Position ~ Child always follow distance from parent
+
     }
 
     private void moving()
@@ -80,7 +108,9 @@ public class Player : MonoBehaviour
     private void animating() {
         // anim.SetInteger(0, (int)moveDir.x);
         anim.SetInteger("Horizontal", (int)moveDir.x);
+        // anim.SetInteger("Vertical", (int)moveDir.y);
     }
+
 
     /// <summary>
     /// Not Use Function.
