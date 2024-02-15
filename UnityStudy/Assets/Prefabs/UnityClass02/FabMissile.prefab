@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4007333389702195669}
   - component: {fileID: 3843205109299886414}
   - component: {fileID: 955744798089189069}
+  - component: {fileID: 4261303654916528448}
+  - component: {fileID: -7664863048932620996}
   m_Layer: 0
   m_Name: FabMissile
   m_TagString: Untagged
@@ -98,3 +100,94 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+--- !u!60 &4261303654916528448
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384658093030861210}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.33333334, y: 0.45833334}
+    newSize: {x: 0.33333334, y: 0.45833334}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.0873685, y: 0.23760553}
+      - {x: -0.08571831, y: 0.19925874}
+      - {x: -0.1254018, y: 0.18446308}
+      - {x: -0.17727971, y: 0.14431374}
+      - {x: -0.16403936, y: -0.016620608}
+      - {x: -0.13267821, y: -0.08536701}
+      - {x: -0.08929503, y: -0.11012836}
+      - {x: -0.048913192, y: -0.1515382}
+      - {x: -0.044189624, y: -0.22400859}
+      - {x: 0.052786477, y: -0.22572792}
+      - {x: 0.042846017, y: -0.15345313}
+      - {x: 0.09286809, y: -0.10850678}
+      - {x: 0.12961939, y: -0.10145076}
+      - {x: 0.12884054, y: -0.024159878}
+      - {x: 0.16864552, y: -0.01745031}
+      - {x: 0.16238588, y: 0.15075745}
+      - {x: 0.12206803, y: 0.18325973}
+      - {x: 0.08493848, y: 0.18667442}
+      - {x: 0.0858563, y: 0.23604412}
+  m_UseDelaunayMesh: 0
+--- !u!50 &-7664863048932620996
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384658093030861210}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
