@@ -38,7 +38,27 @@ public class GameManager : MonoBehaviour
     }
 
     private void spawnEnemy() { 
-        Random.Range(0, listEnemy.Count); // 0 ~ count - 1..
+        float rand = Random.Range(0, listEnemy.Count); // 0 ~ count - 1..
         //Random.Range(0.0f, 100.0f); // 0.0 ~ 100.0..
+        // 0.0 ~ 50.0 -> Enemy A
+        // 50.00 ~ 75.0 -> Enemy B
+        // 75.0 ~ 100.0 -> Enemy C
+        GameObject objEnemy = null;
+        if (rand < 50.0)
+        {
+            //Enemy A
+            objEnemy = listEnemy[0];
+        }
+        else if (rand < 75.0) {
+            //Enemy B
+            objEnemy = listEnemy[1];
+        }
+        else
+        {
+            //Enemy C
+            objEnemy = listEnemy[2];
+        }
+
+        Instantiate(objEnemy);
     }
 }
