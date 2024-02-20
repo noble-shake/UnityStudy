@@ -26,14 +26,6 @@ public class Player_bu : MonoBehaviour
     [Space]
     [SerializeField] Transform trsShootPoint;
 
-    [SerializeField] float MissileSpeed = 7f;
-    [SerializeField] float MissileDamage = 1f;
-
-    [Header("game style setting")]
-    [SerializeField]bool userShoot = true;
-    float timer =0f;
-    [SerializeField, Range(0.2f, 2.0f)] float shootTimer = 0.5f;
-
     void Start()
     {
        anim = GetComponent<Animator>();
@@ -47,32 +39,13 @@ public class Player_bu : MonoBehaviour
         checkShootMissile();
     }
 
-
-    /// <summary>
-    /// Detect Editor Inspector Change.
-    /// </summary>
-    // private void OnValidate()
-    // {
-    //    Debug.Log("inspector changed");
-    //}
-
-
     /// <summary>
     /// Player Shoot Missile Script
     /// </summary>
     private void checkShootMissile()
     {
-
-        if (userShoot == true && Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space)) {
             createMissile(trsShootPoint.position, Vector3.zero);
-            
-        }
-        else if (userShoot == false) {
-            timer += Time.deltaTime;
-            if (timer >= shootTimer) {
-                createMissile(trsShootPoint.position, Vector3.zero);
-                timer = 0f;
-            }
         }
     }
 
@@ -80,11 +53,8 @@ public class Player_bu : MonoBehaviour
         // Resources folder support in Unity Engine from naming Resources.
         // above methods not recommended..
         // GameObject goMissile = Resources.Load<GameObject>("File/FabMissile");
-        // Instantiate(fabMissile, _pos, Quaternion.Euler(_rot));
+        Instantiate(fabMissile, _pos, Quaternion.Euler(_rot));
         //Global Position, Local Position ~ Child always follow distance from parent
-        GameObject objMissile = Instantiate(fabMissile, _pos, Quaternion.Euler(_rot));
-        Missile missile = objMissile.GetComponent<Missile>();
-        missile.SetMissile(MissileSpeed, MissileDamage);
 
     }
 
@@ -153,7 +123,6 @@ public class Player_bu : MonoBehaviour
     {
         Debug.Log("Trigger");
     }
-
     /// <summary>
     /// Not Use Function.
     /// </summary>
