@@ -144,16 +144,14 @@ public class Player_bu : MonoBehaviour
     /// <summary>
     /// Trigger and Collision divided from isTrigger in inspector.
     /// IF GameObject has Collider and Rigidbody, and collide other object
+    /// object does not physical bounds. just want to collision exist. -> is Trigger
     /// </summary>
     /// <param name="collision"></param>
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        
-    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        Debug.Log("Trigger");
     }
 
     /// <summary>

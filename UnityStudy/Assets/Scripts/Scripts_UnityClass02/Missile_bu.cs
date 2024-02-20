@@ -7,6 +7,7 @@ public class Missile_bu : MonoBehaviour
     [SerializeField] float speed;
     float damage = 1.0f;
     bool isEnemyMissile = true;
+    bool isHit = false; // 2개 오브젝트가 겹쳐있을 때, 막아주기 위함.
     // Start is called before the first frame update
     void Start()
     {
@@ -41,8 +42,18 @@ public class Missile_bu : MonoBehaviour
         // RigidBody -> Dynamic / Static equal to physics,  kinematic -> controlled by script.
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (isHit) return;
+        // if (collision.tag == "Enemy") { } -> as string
+        if (collision.CompareTag("Enemy")) {
+            isHit = true;
+
+            Enemy enemySc = collision.GetComponent<Enemy>();
+            enemySc.Hit(damage);
+
+            Destroy(gameObject);
+        } // -> as bool
     }
 }
