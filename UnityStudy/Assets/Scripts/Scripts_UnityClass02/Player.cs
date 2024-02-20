@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_bu : MonoBehaviour
+public class Player : MonoBehaviour
 {
     //2024-02-08
     // [LEARNED] Animation Description. Finite State Machine.

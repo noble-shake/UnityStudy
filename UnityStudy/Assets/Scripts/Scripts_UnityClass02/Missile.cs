@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Missile_bu : MonoBehaviour
+public class Missile : MonoBehaviour
 {
     [SerializeField] float speed;
     float damage = 1.0f;

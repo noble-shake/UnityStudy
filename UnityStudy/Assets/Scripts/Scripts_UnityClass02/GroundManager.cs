@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundManager_bu : MonoBehaviour
+public class GroundManager : MonoBehaviour
 {
     // 2024-02-02 ~ GroundManager Implements
     // Access to Shader and Control Offset for Map Scrolling.
