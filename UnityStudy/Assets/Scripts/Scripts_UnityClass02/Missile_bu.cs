@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Missile : MonoBehaviour
+public class Missile_bu : MonoBehaviour
 {
     [SerializeField] float speed;
     float damage = 1.0f;
@@ -50,7 +50,7 @@ public class Missile : MonoBehaviour
         if (collision.CompareTag("Enemy")) {
             isHit = true;
 
-            Enemy enemySc = collision.GetComponent<Enemy>();
+            Enemy_bu enemySc = collision.GetComponent<Enemy_bu>();
             enemySc.Hit(damage);
 
             Destroy(gameObject);
