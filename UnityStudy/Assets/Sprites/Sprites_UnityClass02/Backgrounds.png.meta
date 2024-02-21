@@ -150,7 +150,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 143.66667
+        width: 144
         height: 288
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -218,7 +218,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      A: -1608685417
+      B: -33619753
       Bottom: -7810250789829366425
+      C: -157445388
       Middle: 656988019031298925
       Top: -8461514266414155272
   mipmapLimitGroupName: 

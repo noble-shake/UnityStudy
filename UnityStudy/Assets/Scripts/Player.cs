@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -27,6 +28,29 @@ public class Player : MonoBehaviour
     [SerializeField] bool userShoot;
     float timer;
     [SerializeField, Range(0.2f, 2f)] float shootTimer = 0.5f;
+
+    [Header("플레이어 정보")]
+    [SerializeField] int playerAttackLevel = 1;
+    [SerializeField] int hp = 3;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //if (collision.CompareTag("item")) {}
+        if (collision.tag == Tool.GetGameTag(GameTag.Item)) { 
+            Item sc = collision.GetComponent<Item>();
+            eItemType type = sc.GetItemType();
+            switch (type) {
+                case eItemType.Recorvery:
+                    hp++;
+                    break;
+                case eItemType.PowerUp:
+                    playerAttackLevel++;
+                    break;
+            }
+
+            Destroy(collision.gameObject);
+        }
+    }
 
     void Start()
     {

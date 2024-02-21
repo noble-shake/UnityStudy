@@ -11,6 +11,11 @@ public class Enemy : MonoBehaviour
     Sprite spriteDefault;
     [SerializeField] Sprite spriteHit;
 
+    [SerializeField] GameObject fabExplosion;
+
+    [Header("item")]
+    [SerializeField] private bool hasItem = false;
+    [SerializeField] private bool dropItem = false;
 
     private void OnBecameInvisible()
     {
@@ -21,6 +26,10 @@ public class Enemy : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteDefault = spriteRenderer.sprite;
+
+        if (hasItem == true) {
+            spriteRenderer.color = new Color(0, 0.4f, 1.0f, 1.0f);
+        }
     }
 
     void Update()
@@ -35,6 +44,11 @@ public class Enemy : MonoBehaviour
         if (hp <= 0)
         {
             Destroy(gameObject);
+
+            GameObject expObj = Instantiate(fabExplosion, transform.position, Quaternion.identity);
+            Explosion expSc = expObj.GetComponent<Explosion>();
+            expSc.SetSize(spriteDefault.rect.width);
+            //fabExplosion
         }
         else
         {
@@ -47,4 +61,11 @@ public class Enemy : MonoBehaviour
     {
         spriteRenderer.sprite = spriteDefault;
     }
+
+    public void setHaveItem()
+    {
+        hasItem = true;
+    }
+
+
 }

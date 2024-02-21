@@ -12,9 +12,10 @@ public class Missile : MonoBehaviour
     //콜라이더와 리지드바디를 가지고 있을때 다른 물리콜라이더와 닿았는지 체크하고 싶을때
     private void OnTriggerEnter2D(Collider2D collision)//collision은 내 콜라이더에 닿은 상대방
     {
+        // 중복되어 있는 적기를 하나만 처리하게 바로 효과를 꺼줌.
         if (isHit == true) return;
-
-        if (collision.tag == "Enemy")
+        
+        if (collision.tag == Tool.GetGameTag(GameTag.Enemy))
         {
             isHit = true;
 
