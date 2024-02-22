@@ -49,6 +49,11 @@ public class Enemy : MonoBehaviour
             Explosion expSc = expObj.GetComponent<Explosion>();
             expSc.SetSize(spriteDefault.rect.width);
             //fabExplosion
+
+            if (hasItem == true && dropItem == false) {  // Item has but, no drop yet.
+                dropItem = true;
+                GameManager.Instance.dropItem(transform.position);
+            }
         }
         else
         {
@@ -67,5 +72,16 @@ public class Enemy : MonoBehaviour
         hasItem = true;
     }
 
+    public void destroyOnBodySlam() {
+        destroyFunction();
+    }
+
+    private void destroyFunction() {
+        Destroy(gameObject);
+
+        GameObject expObj = Instantiate(fabExplosion, transform.position, Quaternion.identity);
+        Explosion expSc = expObj.GetComponent<Explosion>();
+        expSc.SetSize(spriteDefault.rect.width);
+    }
 
 }

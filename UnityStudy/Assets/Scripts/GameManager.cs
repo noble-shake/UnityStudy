@@ -98,4 +98,9 @@ public class GameManager : MonoBehaviour
             gosc.setHaveItem();
         }
     }
+
+    public void dropItem(Vector3 _pos) {
+        int raniNum = Random.Range(0, itemList.Count);
+        Instantiate(itemList[raniNum], _pos, Quaternion.identity);
+    }
 }

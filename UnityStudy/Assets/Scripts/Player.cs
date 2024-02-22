@@ -30,16 +30,27 @@ public class Player : MonoBehaviour
     [SerializeField, Range(0.2f, 2f)] float shootTimer = 0.5f;
 
     [Header("플레이어 정보")]
+    [SerializeField] int maxHp = 4;
     [SerializeField] int playerAttackLevel = 1;
     [SerializeField] int hp = 3;
+    [SerializeField] Sprite spriteDefault;
+    SpriteRenderer spriteRenderer;
+
+    [Header("플레이어 무적")]
+    bool isInvincible = false;
+    float timerInvincible = 0.0f;
+    [SerializeField] float tInvincible = 1f;
+    BoxCollider2D boxCollider;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //if (collision.CompareTag("item")) {}
-        if (collision.tag == Tool.GetGameTag(GameTag.Item)) { 
+        if (collision.tag == Tool.GetGameTag(GameTag.Item))
+        {
             Item sc = collision.GetComponent<Item>();
             eItemType type = sc.GetItemType();
-            switch (type) {
+            switch (type)
+            {
                 case eItemType.Recorvery:
                     hp++;
                     break;
@@ -50,11 +61,30 @@ public class Player : MonoBehaviour
 
             Destroy(collision.gameObject);
         }
+        else if (collision.tag == Tool.GetGameTag(GameTag.Enemy)) {
+            if (isInvincible == true) return;
+
+            Enemy sc = collision.GetComponent<Enemy>();
+            sc.destroyOnBodySlam();
+
+            Hit();
+        }
+    }
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+        hp = maxHp;
+        
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteDefault = spriteRenderer.sprite;
+        BoxCollider = GetComponent<BoxCollider2D>();
     }
 
     void Start()
     {
-        anim = GetComponent<Animator>();
+        
+        
     }
 
     void Update()
@@ -64,6 +94,7 @@ public class Player : MonoBehaviour
         animating();
 
         checkShootMissile();
+        checkInvinciblity();
     }
 
     /// <summary>
@@ -142,5 +173,55 @@ public class Player : MonoBehaviour
         Missile missile = objMissile.GetComponent<Missile>();
 
         missile.SetMissile(MissileSpeed, MissileDamage);
+    }
+    public void destroyOnBodySlam()
+    {
+        destroyFunction();
+    }
+
+    private void destroyFunction()
+    {
+        Destroy(gameObject);
+
+        // GameObject expObj = Instantiate(fabExplosion, transform.position, Quaternion.identity);
+        // Explosion expSc = expObj.GetComponent<Explosion>();
+        // expSc.SetSize(spriteDefault.rect.width);
+    }
+
+    public void Hit()
+    {
+        hp--;
+
+        if (hp < 0)
+        {
+            destroyFunction();
+        }
+        else {
+            isInvincible = true;
+        }
+    }
+
+    private void checkInvinciblity() {
+        if (isInvincible == false) return;
+
+        boxCollider.enabled = true;
+        
+        if (spriteRenderer.color.a != 0.5) {
+            setPlayerAlpha(0.5f);
+        }
+
+        timerInvincible += Time.deltaTime;
+        if (tInvincible <= timerInvincible) {
+            isInvincible = false;
+            timerInvincible = 0.0f;
+
+            setPlayerAlpha(1f);
+        }
+    }
+
+    private void setPlayerAlpha(float _a) {
+        Color color = spriteRenderer.color;
+        color.a = _a;
+        spriteRenderer.color = color;
     }
 }
