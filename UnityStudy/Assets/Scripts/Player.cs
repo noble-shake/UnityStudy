@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
         
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteDefault = spriteRenderer.sprite;
-        BoxCollider = GetComponent<BoxCollider2D>();
+        // BoxCollider = GetComponent<BoxCollider2D>();
     }
 
     void Start()
@@ -204,7 +204,7 @@ public class Player : MonoBehaviour
     private void checkInvinciblity() {
         if (isInvincible == false) return;
 
-        boxCollider.enabled = true;
+        // boxCollider.enabled = true;
         
         if (spriteRenderer.color.a != 0.5) {
             setPlayerAlpha(0.5f);
@@ -224,4 +224,6 @@ public class Player : MonoBehaviour
         color.a = _a;
         spriteRenderer.color = color;
     }
+
+
 }

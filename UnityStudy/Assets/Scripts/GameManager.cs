@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField, Range(0.0f, 100.0f)] float itemDropRate = 0.0f;
     [SerializeField] List<GameObject> itemList = new List<GameObject>();
 
+    [SerializeField] GameObject objPlayer;
+
     private void Awake()
     {
         // SingleTon ~ GameManger is Only One Object
@@ -102,5 +104,15 @@ public class GameManager : MonoBehaviour
     public void dropItem(Vector3 _pos) {
         int raniNum = Random.Range(0, itemList.Count);
         Instantiate(itemList[raniNum], _pos, Quaternion.identity);
+    }
+
+    public Transform GetPlayerTransform() {
+        if (objPlayer == null)
+        {
+            return null;
+        }
+        else {
+            return objPlayer.transform;
+        }
     }
 }
