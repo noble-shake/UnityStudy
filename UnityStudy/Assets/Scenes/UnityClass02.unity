@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 0.033018887, b: 0.033018887, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -294,6 +294,7 @@ GameObject:
   - component: {fileID: 171447248}
   - component: {fileID: 171447250}
   - component: {fileID: 171447249}
+  - component: {fileID: 171447251}
   m_Layer: 5
   m_Name: Effect
   m_TagString: Untagged
@@ -347,7 +348,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.918
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -360,6 +361,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 171447247}
   m_CullTransparentMesh: 1
+--- !u!114 &171447251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171447247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 0
 --- !u!1 &266714311
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,6 +833,7 @@ GameObject:
   - component: {fileID: 925564975}
   - component: {fileID: 925564977}
   - component: {fileID: 925564976}
+  - component: {fileID: 925564978}
   m_Layer: 5
   m_Name: Hp
   m_TagString: Untagged
@@ -885,6 +900,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 925564974}
   m_CullTransparentMesh: 1
+--- !u!114 &925564978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925564974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 0
 --- !u!1 &1450077599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1152,9 +1180,9 @@ GameObject:
   - component: {fileID: 1886979523}
   - component: {fileID: 1886979522}
   - component: {fileID: 1886979521}
-  - component: {fileID: 1886979525}
   - component: {fileID: 1886979526}
   - component: {fileID: 1886979527}
+  - component: {fileID: 1886979528}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1251,41 +1279,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &1886979525
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1886979520}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &1886979526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1310,9 +1303,13 @@ MonoBehaviour:
   shootTimer: 0.5
   maxHp: 4
   playerAttackLevel: 1
-  hp: 3
-  spriteDefault: {fileID: 0}
-  tInvincible: 1
+  maxPlayerAttackLevel: 3
+  fabExplosion: {fileID: 27332143617213781, guid: 86ef665504aeb704792c629c48d1ea98, type: 3}
+  tInvincibility: 1
+  distanceMissileX: 0.2
+  distanceMissileY: 0.1
+  angleMissile: 45
+  playerHp: {fileID: 2055552288}
 --- !u!50 &1886979527
 Rigidbody2D:
   serializedVersion: 4
@@ -1340,6 +1337,51 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!61 &1886979528
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886979520}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &2008162254
 GameObject:
   m_ObjectHideFlags: 0
@@ -1420,6 +1462,7 @@ GameObject:
   - component: {fileID: 2055552286}
   - component: {fileID: 2055552285}
   - component: {fileID: 2055552284}
+  - component: {fileID: 2055552288}
   m_Layer: 5
   m_Name: CanvasHp
   m_TagString: Untagged
@@ -1513,6 +1556,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.652}
   m_SizeDelta: {x: 1080, y: 1920}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2055552288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055552283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d873cba36488ee43848614af9fc1dcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curPlayerHp: 100
+  maxPlayerHp: 5
 --- !u!1 &2075531420
 GameObject:
   m_ObjectHideFlags: 0

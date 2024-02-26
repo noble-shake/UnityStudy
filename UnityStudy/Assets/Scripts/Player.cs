@@ -30,61 +30,72 @@ public class Player : MonoBehaviour
     [SerializeField, Range(0.2f, 2f)] float shootTimer = 0.5f;
 
     [Header("플레이어 정보")]
-    [SerializeField] int maxHp = 4;
+    [SerializeField] int maxHp = 3;
     [SerializeField] int playerAttackLevel = 1;
-    [SerializeField] int hp = 3;
-    [SerializeField] Sprite spriteDefault;
+    [SerializeField] int maxPlayerAttackLevel = 5;
+    int hp;
+    [SerializeField] GameObject fabExplosion;
+    
+
+    Sprite spriteDefault;
     SpriteRenderer spriteRenderer;
 
-    [Header("플레이어 무적")]
-    bool isInvincible = false;
-    float timerInvincible = 0.0f;
-    [SerializeField] float tInvincible = 1f;
+    bool isInvincibility = false;//무적인지
+    float timerInvincibility = 0.0f;//타이머
+    [SerializeField] float tInvincibility = 1f;//무적시간 기준
     BoxCollider2D boxCollider;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    [SerializeField] float distanceMissileX =3f;
+    [SerializeField] float distanceMissileY =3f;
+    [SerializeField] float angleMissile =30f;
+
+    [Header("HP")]
+    [SerializeField] PlayerHp playerHp;
+
+    private void OnTriggerEnter2D(Collider2D collision)//collision 닿은 상대방
     {
-        //if (collision.CompareTag("item")) {}
         if (collision.tag == Tool.GetGameTag(GameTag.Item))
         {
             Item sc = collision.GetComponent<Item>();
+
             eItemType type = sc.GetItemType();
             switch (type)
             {
                 case eItemType.Recorvery:
                     hp++;
+                    if (hp > maxHp) {
+                        hp = maxHp;
+                    }
+                    playerHp.SetPlayerHp(hp, maxHp);
                     break;
                 case eItemType.PowerUp:
                     playerAttackLevel++;
+                    if (playerAttackLevel > maxPlayerAttackLevel) {
+                        playerAttackLevel = maxPlayerAttackLevel;
+                    }
                     break;
             }
 
             Destroy(collision.gameObject);
         }
-        else if (collision.tag == Tool.GetGameTag(GameTag.Enemy)) {
-            if (isInvincible == true) return;
+        else if (collision.tag == Tool.GetGameTag(GameTag.Enemy))
+        {
+            if (isInvincibility == true) return;
 
+            //적 파괴
             Enemy sc = collision.GetComponent<Enemy>();
             sc.destroyOnBodySlam();
 
             Hit();
         }
     }
-
-    private void Awake()
+    void Awake()
     {
         anim = GetComponent<Animator>();
         hp = maxHp;
-        
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteDefault = spriteRenderer.sprite;
-        // BoxCollider = GetComponent<BoxCollider2D>();
-    }
-
-    void Start()
-    {
-        
-        
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
     void Update()
@@ -94,7 +105,7 @@ public class Player : MonoBehaviour
         animating();
 
         checkShootMissile();
-        checkInvinciblity();
+        checkInvincibility();
     }
 
     /// <summary>
@@ -151,19 +162,52 @@ public class Player : MonoBehaviour
     {
         if (userShoot == true && Input.GetKeyDown(KeyCode.Space))
         {
-            createMissile(trsShootPoint.position, Vector3.zero);
+            checkLevelAndCreateMissile();
         }
         else if (userShoot == false)//자동발사 게임이라면
         {
             timer += Time.deltaTime;
             if (timer >= shootTimer)//총알을 쏠 준비가 됨
             {
-                createMissile(trsShootPoint.position, Vector3.zero);
+                checkLevelAndCreateMissile();
                 timer = 0.0f;
             }
         }
     }
 
+    private void checkLevelAndCreateMissile() {
+        //trsShootPoint.position;
+
+        switch (playerAttackLevel) {
+            case 1:
+                createMissile(trsShootPoint.position, Vector3.zero);
+                break;
+            case 2:
+                createMissile(trsShootPoint.position + new Vector3(distanceMissileX, 0, 0), Vector3.zero);
+                createMissile(trsShootPoint.position - new Vector3(distanceMissileX, 0, 0), Vector3.zero);
+                break;
+            case 3:
+                createMissile(trsShootPoint.position + new Vector3(distanceMissileX, 0, 0), Vector3.zero);
+                createMissile(trsShootPoint.position + new Vector3(0, distanceMissileY, 0), Vector3.zero);
+                createMissile(trsShootPoint.position - new Vector3(distanceMissileX, 0, 0), Vector3.zero);
+                break;
+            case 4:
+                createMissile(trsShootPoint.position + new Vector3(distanceMissileX, 0, 0), Vector3.zero);
+                createMissile(trsShootPoint.position + new Vector3(0, distanceMissileY, 0), Vector3.zero);
+                createMissile(trsShootPoint.position - new Vector3(distanceMissileX, 0, 0), Vector3.zero);
+                createMissile(trsShootPoint.position + new Vector3(distanceMissileX, 0, 0), new Vector3(0, 0, -angleMissile));
+                break;
+            case 5:
+                createMissile(trsShootPoint.position + new Vector3(distanceMissileX, 0, 0), Vector3.zero);
+                createMissile(trsShootPoint.position + new Vector3(0, distanceMissileY, 0), Vector3.zero);
+                createMissile(trsShootPoint.position - new Vector3(distanceMissileX, 0, 0), Vector3.zero);
+                createMissile(trsShootPoint.position + new Vector3(distanceMissileX, 0, 0), new Vector3(0, 0, -angleMissile));
+                createMissile(trsShootPoint.position + new Vector3(distanceMissileX, 0, 0), new Vector3(0, 0, +angleMissile));
+                break;
+        }
+
+        
+    }
     /// <summary>
     /// 미사일을 생성
     /// </summary>
@@ -174,19 +218,6 @@ public class Player : MonoBehaviour
 
         missile.SetMissile(MissileSpeed, MissileDamage);
     }
-    public void destroyOnBodySlam()
-    {
-        destroyFunction();
-    }
-
-    private void destroyFunction()
-    {
-        Destroy(gameObject);
-
-        // GameObject expObj = Instantiate(fabExplosion, transform.position, Quaternion.identity);
-        // Explosion expSc = expObj.GetComponent<Explosion>();
-        // expSc.SetSize(spriteDefault.rect.width);
-    }
 
     public void Hit()
     {
@@ -194,36 +225,62 @@ public class Player : MonoBehaviour
 
         if (hp < 0)
         {
+            hp = 0;
+        }
+        playerHp.SetPlayerHp(hp, maxHp);
+
+        // Attack Debuf
+        playerAttackLevel--;
+        if (playerAttackLevel < 1)
+        {
+            playerAttackLevel = 1;
+        }
+
+        if (hp <= 0)
+        {
             destroyFunction();
         }
-        else {
-            isInvincible = true;
+        else
+        {
+            isInvincibility = true;
+        }
+
+
+    }
+
+    private void checkInvincibility()
+    {
+        if (isInvincibility == false) return;
+
+        if (spriteRenderer.color.a != 0.5f)//무적이 되었는데 0.5가 아니라면
+        {
+            setPlayerColorAlpha(0.5f);
+        }
+
+        timerInvincibility += Time.deltaTime;
+        if (tInvincibility <= timerInvincibility)
+        {
+            isInvincibility = false;
+            boxCollider.enabled = false;
+            timerInvincibility = 0.0f;
+            boxCollider.enabled = true;
+            setPlayerColorAlpha(1f);
         }
     }
 
-    private void checkInvinciblity() {
-        if (isInvincible == false) return;
-
-        // boxCollider.enabled = true;
-        
-        if (spriteRenderer.color.a != 0.5) {
-            setPlayerAlpha(0.5f);
-        }
-
-        timerInvincible += Time.deltaTime;
-        if (tInvincible <= timerInvincible) {
-            isInvincible = false;
-            timerInvincible = 0.0f;
-
-            setPlayerAlpha(1f);
-        }
-    }
-
-    private void setPlayerAlpha(float _a) {
+    private void setPlayerColorAlpha(float _a)
+    {
         Color color = spriteRenderer.color;
         color.a = _a;
         spriteRenderer.color = color;
     }
 
+    private void destroyFunction()
+    {
+        Destroy(gameObject);
 
+        GameObject expObj = Instantiate(fabExplosion, transform.position, Quaternion.identity);
+        Explosion expSc = expObj.GetComponent<Explosion>();
+        expSc.SetSize(spriteDefault.rect.width);
+    }
 }
