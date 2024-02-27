@@ -17,6 +17,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private bool hasItem = false;
     [SerializeField] private bool dropItem = false;
 
+    private GameManager gameManager;
+
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
@@ -30,6 +32,10 @@ public class Enemy : MonoBehaviour
         if (hasItem == true) {
             spriteRenderer.color = new Color(0, 0.4f, 1.0f, 1.0f);
         }
+
+        gameManager = GameManager.Instance;
+        gameManager.AddSpawnEnemyList(gameObject);
+
     }
 
     void Update()
@@ -84,4 +90,11 @@ public class Enemy : MonoBehaviour
         expSc.SetSize(spriteDefault.rect.width);
     }
 
+    private void OnDestroy()
+    {
+        if (gameManager != null) {
+            gameManager.RemoveSpawnEnemyList(gameObject);
+        }
+        
+    }
 }

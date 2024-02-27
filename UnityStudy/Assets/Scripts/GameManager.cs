@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class GameManager : MonoBehaviour
     [Header("적기생성")]
     [SerializeField] bool isSpawn = false;
     [SerializeField] List<GameObject> listEnemy;//3?
+    List<GameObject> listSpawnEnemy = new List<GameObject>();
 
     [SerializeField, Range(0.1f, 2.0f)] float spawnTime = 1.0f;
     float sTimer = 0.0f;//스폰타이머 
@@ -20,7 +23,6 @@ public class GameManager : MonoBehaviour
 
     Camera mainCam;
 
-    float gameTimer;
     bool isPatten1 = false;
 
     [Header("Item Drop Rate")]
@@ -28,6 +30,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<GameObject> itemList = new List<GameObject>();
 
     [SerializeField] GameObject objPlayer;
+
+    [Header("gauge")]
+    [SerializeField] Slider slider;
+    [SerializeField] Image sliderFill;
+
+    float bossSpawnTime = 60f;
+    [SerializeField] float gameTime = 0f;
+    bool spawnBoss = false;
+    
 
     private void Awake()
     {
@@ -43,6 +54,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        initSlider();
         mainCam = Camera.main;
         trsSpawnPoint = transform.Find("SpawnPoint");
 
@@ -57,8 +69,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        gameTimer += Time.deltaTime;
         checkSpawn();
+        checkTime();
     }
 
     private void checkSpawn()//적기를 소환해도 되는지 체크
@@ -73,9 +85,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void checkTime() {
+        if (spawnBoss == true) return;
+
+        gameTime += Time.deltaTime;
+        
+
+        if (gameTime > bossSpawnTime) {
+            spawnBoss = true;
+            isSpawn = false;
+            clearEnemy();
+            createBoss();
+        }
+
+        modifySlider();
+    }
+
+    private void modifySlider()
+    {
+        slider.value = gameTime;
+    }
+
+    private void initSlider() {
+        slider.maxValue = bossSpawnTime;
+        slider.value = 0f;
+    }
+
+    private void clearEnemy() {
+        int count = listSpawnEnemy.Count;
+        for (int iNum = count - 1; iNum > -1; --iNum) {
+            Destroy(listSpawnEnemy[iNum]);
+        }
+        // listSpawnEnemy.Clear();
+    }
+
+    private void createBoss()
+    {
+        throw new NotImplementedException();
+    }
+
     private void spawnEnemy()//적기를 생산합니다.
     {
-        float rand = Random.Range(0.0f, 100.0f);
+        float rand = UnityEngine.Random.Range(0.0f, 100.0f);
         GameObject objEnemy = listEnemy[0];
         if (rand < 50.0f)
         {
@@ -91,10 +142,13 @@ public class GameManager : MonoBehaviour
         }
 
         Vector3 newPos = trsSpawnPoint.position;
-        newPos.x = Random.Range(vecSpawnLimit.x, vecSpawnLimit.y);
+        newPos.x = UnityEngine.Random.Range(vecSpawnLimit.x, vecSpawnLimit.y);
         GameObject go = Instantiate(objEnemy, newPos, Quaternion.identity);
 
-        float rate = Random.Range(0.0f, 100.0f);
+        // listSpawnEnemy.Add(go);
+        AddSpawnEnemyList(go);
+
+        float rate = UnityEngine.Random.Range(0.0f, 100.0f);
         if (rate <= itemDropRate) {
             Enemy gosc = go.GetComponent<Enemy>();
             gosc.setHaveItem();
@@ -102,7 +156,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void dropItem(Vector3 _pos) {
-        int raniNum = Random.Range(0, itemList.Count);
+        int raniNum = UnityEngine.Random.Range(0, itemList.Count);
         Instantiate(itemList[raniNum], _pos, Quaternion.identity);
     }
 
@@ -114,5 +168,18 @@ public class GameManager : MonoBehaviour
         else {
             return objPlayer.transform;
         }
+    }
+
+    public void AddSpawnEnemyList(GameObject _value) {
+        // 중복 처리
+        //if (listSpawnEnemy.Exists((x) => x == _value) == false)
+        //{
+        //    listSpawnEnemy.Add(_value);
+        //}
+        listSpawnEnemy.Add(_value);
+    }
+
+    public void RemoveSpawnEnemyList(GameObject _value) {
+        listSpawnEnemy.Remove(_value);
     }
 }
