@@ -60,6 +60,7 @@ public class Enemy : MonoBehaviour
                 dropItem = true;
                 GameManager.Instance.dropItem(transform.position);
             }
+            GameManager.Instance.addKillCount();
         }
         else
         {

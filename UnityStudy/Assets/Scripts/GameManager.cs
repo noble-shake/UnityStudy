@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,17 +29,19 @@ public class GameManager : MonoBehaviour
     [Header("Item Drop Rate")]
     [SerializeField, Range(0.0f, 100.0f)] float itemDropRate = 0.0f;
     [SerializeField] List<GameObject> itemList = new List<GameObject>();
-
     [SerializeField] GameObject objPlayer;
 
     [Header("gauge")]
     [SerializeField] Slider slider;
     [SerializeField] Image sliderFill;
+    [SerializeField] TMP_Text textTimer;
 
     float bossSpawnTime = 60f;
     [SerializeField] float gameTime = 0f;
     bool spawnBoss = false;
-    
+
+    [SerializeField] int killCountBossSpawn = 60;
+    [SerializeField] int killCount = 0;
 
     private void Awake()
     {
@@ -71,6 +74,18 @@ public class GameManager : MonoBehaviour
     {
         checkSpawn();
         checkTime();
+        // checkKillCount(); no need to check each frame in update
+    }
+
+    private void checkKillCount()
+    {
+        if (spawnBoss == false && killCountBossSpawn == killCount) {
+            clearEnemy();
+            createBoss();
+            spawnBoss = true;
+            
+        }
+        modifySlider();
     }
 
     private void checkSpawn()//적기를 소환해도 되는지 체크
@@ -104,11 +119,39 @@ public class GameManager : MonoBehaviour
     private void modifySlider()
     {
         slider.value = gameTime;
+        // ToString's parameters
+        // ( ) => "0010"
+        // D3 ~ 세자리 수까지 : 10 -> 010
+        // N2 ..소숫점 수까지
+        textTimer.text = $"{((int)gameTime).ToString("D2")} / {((int)slider.maxValue).ToString("D2")}";
+        // textTimer.text = $"{(int)gameTime} / {slider.maxValue}";
+        // System.DateTime.Now.ToString(); // os time. never use!!
+        // server synchronize needs datetime
+
+        // killcount system.
+        //slider.value = killCount;
+        //textTimer.text = $"{killCount} / {killCountBossSpawn}";
+    }
+
+    public void addKillCount() {
+
+        return;
+
+        killCount++;
+        if (killCount > killCountBossSpawn) {
+            killCount = killCountBossSpawn;
+            spawnBoss = true;
+        }
+
+        checkKillCount();
     }
 
     private void initSlider() {
         slider.maxValue = bossSpawnTime;
+        //slider.maxValue = killCountBossSpawn;
         slider.value = 0f;
+        //textTimer.text = $"{slider.value} / {slider.maxValue}";
+        textTimer.text = $"{slider.value} / {slider.maxValue}";
     }
 
     private void clearEnemy() {
@@ -121,7 +164,7 @@ public class GameManager : MonoBehaviour
 
     private void createBoss()
     {
-        throw new NotImplementedException();
+        
     }
 
     private void spawnEnemy()//적기를 생산합니다.
