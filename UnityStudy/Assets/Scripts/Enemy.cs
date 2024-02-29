@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] bool isBoss;
+
+    public bool Boss 
+    { 
+        get { return isBoss; }
+        set { isBoss = value; }
+    }
+    public bool BossRamda => isBoss; // set disabled.
+    bool bossStartMove = false;
+    private float startPosY;
+    float ratioY;
+    bool swayRight = false; //left right moving
+
     [SerializeField] float hp;
     [SerializeField] float speed;
 
@@ -19,9 +32,15 @@ public class Enemy : MonoBehaviour
 
     private GameManager gameManager;
 
+    [SerializeField] Vector2 vecCamMinMax;//기획자가 설정하는 위치값, 카메라로부터
+    Animator anim;
+
     private void OnBecameInvisible()
     {
-        Destroy(gameObject);
+        if (Boss == false) {
+            Destroy(gameObject);
+        }
+        
     }
 
     void Start()
@@ -36,15 +55,31 @@ public class Enemy : MonoBehaviour
         gameManager = GameManager.Instance;
         gameManager.AddSpawnEnemyList(gameObject);
 
+        startPosY = transform.position.y;
     }
 
     void Update()
     {
-        transform.position += -transform.up * Time.deltaTime * speed;
+        if (isBoss == false)
+        {
+            transform.position += -transform.up * Time.deltaTime * speed;
+        }
+        else {
+            if (bossStartMove == false)
+            {
+                bossStartMoving();
+            }
+            else {
+                bossSwayMoving();
+            }
+        }
+        
     }
 
     public void Hit(float _damage)
     {
+        if (Boss == true && bossStartMove == false) return;
+
         hp -= _damage;
 
         if (hp <= 0)
@@ -64,8 +99,15 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            spriteRenderer.sprite = spriteHit;
-            Invoke("setSpriteDefault", 0.1f);
+            if (Boss == false)
+            {
+                anim.SetTrigger("Hit");
+            }
+            else {
+                spriteRenderer.sprite = spriteHit;
+                Invoke("setSpriteDefault", 0.1f);
+            }
+
         }
     }
 
@@ -80,7 +122,10 @@ public class Enemy : MonoBehaviour
     }
 
     public void destroyOnBodySlam() {
-        destroyFunction();
+        if (Boss == false) {
+            destroyFunction();
+        }
+        
     }
 
     private void destroyFunction() {
@@ -98,4 +143,39 @@ public class Enemy : MonoBehaviour
         }
         
     }
+
+    private void bossStartMoving() {
+        ratioY += Time.deltaTime * 0.5f;
+        if (ratioY >= 1.0f) {
+            bossStartMove = true;
+        }
+
+        Vector3 curPos = transform.position;
+        curPos.y = Mathf.SmoothStep(startPosY, 2.5f, ratioY);
+        transform.position = curPos;
+    }
+
+    private void bossSwayMoving() {
+        if (swayRight)
+        {
+            transform.position += transform.right * Time.deltaTime * speed;
+        }
+        else {
+            transform.position += -transform.right * Time.deltaTime * speed;
+        }
+        checkMoveLimit();
+    }
+
+    private void checkMoveLimit() {
+        Vector3 curPos = Camera.main.WorldToViewportPoint(transform.position);
+        if (swayRight == false && curPos.x < vecCamMinMax.x)
+        {
+            swayRight = true;
+        }
+        else if (swayRight == true && curPos.x > vecCamMinMax.y)
+        {
+            swayRight = false;
+        }
+    }
+
 }

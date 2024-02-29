@@ -90,12 +90,13 @@ public class GameManager : MonoBehaviour
 
     private void checkSpawn()//적기를 소환해도 되는지 체크
     {
-        if (isSpawn == false) return;
+        if (isSpawn == false || spawnBoss == true) return;
 
         sTimer += Time.deltaTime;
-        if (sTimer >= spawnTime)
+        if (sTimer >= spawnTime && gameTime < bossSpawnTime - 1)
         {
             sTimer = 0.0f;
+
             spawnEnemy();//적기생산
         }
     }
@@ -164,6 +165,9 @@ public class GameManager : MonoBehaviour
 
     private void createBoss()
     {
+        // GameObject go = Instantiate(listEnemy[3], newPos, Quaternion.identity);
+        GameObject go = listEnemy[listEnemy.Count - 1];
+        Instantiate(go, trsSpawnPoint.position, Quaternion.identity);
         
     }
 
