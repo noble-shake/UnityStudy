@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+
+    public enum enumEnemy { EnemyA, EnemyB, EnemyC, Boss,}
+
+    [SerializeField] enumEnemy EnemyType;
+
     [SerializeField] bool isBoss;
 
     public bool Boss 
@@ -18,6 +23,7 @@ public class Enemy : MonoBehaviour
     bool swayRight = false; //left right moving
 
     [SerializeField] float hp;
+    float hpMax;
     [SerializeField] float speed;
 
     SpriteRenderer spriteRenderer;
@@ -43,6 +49,12 @@ public class Enemy : MonoBehaviour
         
     }
 
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+        hpMax = hp;
+    }
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -54,6 +66,10 @@ public class Enemy : MonoBehaviour
 
         gameManager = GameManager.Instance;
         gameManager.AddSpawnEnemyList(gameObject);
+        if (Boss == true) {
+            gameManager.HitBoss((int)hp, (int)hpMax);
+        }
+
 
         startPosY = transform.position.y;
     }
@@ -91,17 +107,25 @@ public class Enemy : MonoBehaviour
             expSc.SetSize(spriteDefault.rect.width);
             //fabExplosion
 
-            if (hasItem == true && dropItem == false) {  // Item has but, no drop yet.
+            if ((hasItem == true || Boss==true) && dropItem == false) {  // Item has but, no drop yet.
                 dropItem = true;
                 GameManager.Instance.dropItem(transform.position);
             }
             GameManager.Instance.addKillCount();
+
+            if (Boss = true) {
+                gameManager.BossKill();
+            }
         }
         else
         {
-            if (Boss == false)
+            if (Boss == true)
             {
-                anim.SetTrigger("Hit");
+                if (checkAnim() == true) {
+                    anim.SetTrigger("Hit");
+                }
+                gameManager.HitBoss((int)hp, (int)hpMax);
+                
             }
             else {
                 spriteRenderer.sprite = spriteHit;
@@ -109,6 +133,12 @@ public class Enemy : MonoBehaviour
             }
 
         }
+    }
+
+    private bool checkAnim() {
+        bool isNameBossHit = anim.GetCurrentAnimatorStateInfo(0).IsName("BossHit"); // name=bossthit -> true
+        // anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f // 0 ~ 1.0  1이라면 애니메이션이 끝까지 구동
+        return !isNameBossHit;
     }
 
     private void setSpriteDefault()

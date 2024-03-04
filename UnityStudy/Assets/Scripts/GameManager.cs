@@ -24,8 +24,6 @@ public class GameManager : MonoBehaviour
 
     Camera mainCam;
 
-    bool isPatten1 = false;
-
     [Header("Item Drop Rate")]
     [SerializeField, Range(0.0f, 100.0f)] float itemDropRate = 0.0f;
     [SerializeField] List<GameObject> itemList = new List<GameObject>();
@@ -39,9 +37,15 @@ public class GameManager : MonoBehaviour
     float bossSpawnTime = 60f;
     [SerializeField] float gameTime = 0f;
     bool spawnBoss = false;
+    float colorRatio = 0f;
+    Color colorBossHp;
 
     [SerializeField] int killCountBossSpawn = 60;
     [SerializeField] int killCount = 0;
+
+    [Header("Score")]
+    [SerializeField] TMP_Text textScore;
+    float score;
 
     private void Awake()
     {
@@ -68,6 +72,7 @@ public class GameManager : MonoBehaviour
         vecSpawnLimit.y = mainCam.ViewportToWorldPoint(
             new Vector3(vecCamMinMax.y, 0f)
             ).x;
+
     }
 
     void Update()
@@ -102,19 +107,65 @@ public class GameManager : MonoBehaviour
     }
 
     private void checkTime() {
-        if (spawnBoss == true) return;
+        if (spawnBoss == true)
+        {
+            if (sliderFill.color != colorBossHp) {
+                if (colorRatio != 1.0f) {
+                    colorRatio += Time.deltaTime;
+                    if (colorRatio > 1.0f) {
+                        colorRatio = 1.0f;
+                    }
+                }
+                
+            }
+            if (sliderFill.color != Color.red) {
 
-        gameTime += Time.deltaTime;
-        
 
-        if (gameTime > bossSpawnTime) {
-            spawnBoss = true;
-            isSpawn = false;
-            clearEnemy();
-            createBoss();
+                sliderFill.color = Color.red;
+            }
+        }
+        else {
+            if (sliderFill.color == Color.red) {
+                sliderFill.color = new Color(0.3f, 0.7f, 1f, 1f);
+            }
+            gameTime += Time.deltaTime;
+
+
+            if (gameTime > bossSpawnTime)
+            {
+                gameTime = bossSpawnTime;
+                spawnBoss = true;
+                isSpawn = false;
+                clearEnemy();
+                createBoss();
+            }
+
+            modifySlider();
         }
 
-        modifySlider();
+
+    }
+
+    public void BossKill() {
+        spawnBoss = false;
+        isSpawn = true;
+        initTimer();
+    }
+
+    public void HitBoss(int _curHp, int _maxHp) {
+        textTimer.text = $"{_curHp.ToString("D2")} / {_maxHp.ToString("D4")}";
+        slider.maxValue = _maxHp;
+        slider.value = _curHp;
+    }
+
+    private void initTimer() {
+        gameTime = 0f;
+        bossSpawnTime += 60;
+
+        if (spawnTime != 0.1f) {
+            spawnTime -= 0.1f;
+        }
+        initSlider();
     }
 
     private void modifySlider()
@@ -228,5 +279,26 @@ public class GameManager : MonoBehaviour
 
     public void RemoveSpawnEnemyList(GameObject _value) {
         listSpawnEnemy.Remove(_value);
+    }
+
+    public void DestroyEnemy(Enemy.enumEnemy _value)
+    {
+        switch (_value) {
+            case Enemy.enumEnemy.EnemyA:
+                score += 1;
+                break;
+            case Enemy.enumEnemy.EnemyB:
+                score += 2;
+                break;
+            case Enemy.enumEnemy.EnemyC:
+                score += 3;
+                break;
+            case Enemy.enumEnemy.Boss:
+                score += 4;
+                break;
+        }
+
+        textScore.text = score.ToString("D8");
+
     }
 }

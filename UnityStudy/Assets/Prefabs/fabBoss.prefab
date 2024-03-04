@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1707802051588226130}
   m_Layer: 0
   m_Name: fabBoss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,8 +121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBoss: 1
-  hp: 1000
-  speed: 0
+  hp: 10
+  speed: 3
   spriteHit: {fileID: 0}
   fabExplosion: {fileID: 27332143617213781, guid: 86ef665504aeb704792c629c48d1ea98, type: 3}
   hasItem: 0
