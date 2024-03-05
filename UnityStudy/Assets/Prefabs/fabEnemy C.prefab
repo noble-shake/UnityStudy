@@ -98,13 +98,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 999dc9296a1fb684180b90b8532ac3bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyType: 2
+  isBoss: 0
   hp: 10
   speed: 2
   spriteHit: {fileID: 3714015224569861163, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   fabExplosion: {fileID: 27332143617213781, guid: 86ef665504aeb704792c629c48d1ea98, type: 3}
-  listItem:
-  - {fileID: 4056447764104471543, guid: 30ac6e925df90bd4292bd4cd526231ad, type: 3}
-  - {fileID: 4301342439645519422, guid: d116e6dc5286e0d47b9ea27df12ea6b0, type: 3}
+  hasItem: 0
+  dropItem: 0
+  vecCamMinMax: {x: 0, y: 0}
 --- !u!61 &1630324094685760606
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -14,13 +14,21 @@ public class Missile : MonoBehaviour
     {
         // 중복되어 있는 적기를 하나만 처리하게 바로 효과를 꺼줌.
         if (isHit == true) return;
-        
-        if (collision.tag == Tool.GetGameTag(GameTag.Enemy))
+
+        if (isEnemyMissile == false && collision.tag == Tool.GetGameTag(GameTag.Enemy))
         {
             isHit = true;
 
             Enemy enemySc = collision.GetComponent<Enemy>();
             enemySc.Hit(damage);
+
+            Destroy(gameObject);
+        }
+        else if (isEnemyMissile == true && collision.tag == Tool.GetGameTag(GameTag.Player)) {
+            isHit = true;
+
+            Player playerSc = collision.GetComponent<Player>();
+            playerSc.Hit();
 
             Destroy(gameObject);
         }
@@ -42,6 +50,6 @@ public class Missile : MonoBehaviour
     {
         speed = _speed;
         damage = _damege;
-        isEnemyMissile = true;
+        isEnemyMissile = false;
     }
 }

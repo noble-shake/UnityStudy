@@ -41,6 +41,27 @@ public class Enemy : MonoBehaviour
     [SerializeField] Vector2 vecCamMinMax;//기획자가 설정하는 위치값, 카메라로부터
     Animator anim;
 
+    [Header("boss missile pattern")]
+    //shoot missile
+    [SerializeField] int pattern1Count = 8; 
+    [SerializeField] float pattern1Reload = 1f; 
+    [SerializeField] GameObject pattern1Missile;
+    // spread shot
+    [SerializeField] int pattern2Count = 5;
+    [SerializeField] float pattern2Reload = 0.8f;
+    [SerializeField] GameObject pattern2Missile;
+    // aim to player.
+    [SerializeField] int pattern3Count = 40;
+    [SerializeField] float pattern3Reload = 0.3f;
+    [SerializeField] GameObject pattern3Missile;
+
+    int curPattern = 1;
+    int shoot = 0;
+    float patternTimer;
+    bool patternChange = false;
+    [SerializeField] float pattenrChangeTime = 1f;
+    int curPatternShootCount = 0;
+
     private void OnBecameInvisible()
     {
         if (Boss == false) {
@@ -76,20 +97,109 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        moving();
+        BossShoot();
+        
+    }
+
+    private void moving() {
         if (isBoss == false)
         {
             transform.position += -transform.up * Time.deltaTime * speed;
         }
-        else {
+        else
+        {
             if (bossStartMove == false)
             {
                 bossStartMoving();
             }
-            else {
+            else
+            {
                 bossSwayMoving();
             }
         }
-        
+    }
+
+    private void BossShoot() {
+        if (Boss == false || bossStartMove == false) return;
+
+        patternTimer += Time.deltaTime;
+        if (patternChange == true) {
+            if (patternTimer >= pattenrChangeTime) {
+                patternTimer = 0;
+                patternChange = false;
+            }
+            return;
+        }
+
+        switch (curPattern) {
+            case 1:
+                if (patternTimer >= pattern1Reload) {
+                    patternTimer = 0.0f;
+                    shootStraight();
+                    if (curPatternShootCount >= pattern1Count) {
+                        curPattern++;
+                    }
+                }
+                break;
+            case 2:
+                if (patternTimer >= pattern2Reload)
+                {
+                    patternTimer = 0.0f;
+                    shootShotgun();
+                    if (curPatternShootCount >= pattern2Count)
+                    {
+                        curPattern++;
+                    }
+                }
+                break;
+            case 3:
+                if (patternTimer >= pattern3Reload)
+                {
+                    patternTimer = 0.0f;
+                    shootGatling();
+                    if (curPatternShootCount >= pattern3Count)
+                    {
+                        curPattern = 1;
+                    }
+                }
+                break;
+        }
+
+    }
+
+    private void shootStraight() {
+        curPatternShootCount++;
+        createMissile(transform.position, new Vector3(0f, 0f, 180f), pattern1Missile);
+        createMissile(transform.position + new Vector3(-1f, 0f, 0f), new Vector3(0f, 0f, 180f), pattern1Missile);
+        createMissile(transform.position + new Vector3(1f, 0f, 0f), new Vector3(0f, 0f, 180f), pattern1Missile);
+    }
+
+    private void shootShotgun()
+    {
+        curPatternShootCount++;
+        createMissile(transform.position, new Vector3(0f, 0f, 180f), pattern2Missile);
+        createMissile(transform.position, new Vector3(0f, 0f, 180f + 45f), pattern2Missile);
+        createMissile(transform.position, new Vector3(0f, 0f, 180f - 45f), pattern2Missile);
+        createMissile(transform.position, new Vector3(0f, 0f, 180f + 60f), pattern2Missile);
+        createMissile(transform.position, new Vector3(0f, 0f, 180f - 60f), pattern2Missile);
+    }
+
+    private void shootGatling() {
+        curPatternShootCount++;
+        Transform trsPlayer = gameManager.GetPlayerTransform();
+        if (trsPlayer == null) return;
+        Vector3 playerPos = trsPlayer.position;
+
+        float angle = Quaternion.FromToRotation(Vector3.up, playerPos - transform.position).eulerAngles.z;
+        createMissile(transform.position, new Vector3(0, 0, angle), pattern3Missile);
+        createMissile(transform.position, new Vector3(0, 0, angle - 1), pattern3Missile);
+        createMissile(transform.position, new Vector3(0, 0, angle + 1), pattern3Missile);
+    }
+
+    private void createMissile(Vector3 _pos, Vector3 _rot, GameObject fabMissile)
+    {
+        GameObject objMissile = Instantiate(fabMissile, _pos, Quaternion.Euler(_rot));
     }
 
     public void Hit(float _damage)
@@ -170,6 +280,7 @@ public class Enemy : MonoBehaviour
     {
         if (gameManager != null) {
             gameManager.RemoveSpawnEnemyList(gameObject);
+            gameManager.DestroyEnemy(EnemyType);
         }
         
     }

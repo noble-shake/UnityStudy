@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 999dc9296a1fb684180b90b8532ac3bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyType: 3
   isBoss: 1
   hp: 10
   speed: 3
@@ -128,6 +129,16 @@ MonoBehaviour:
   hasItem: 0
   dropItem: 0
   vecCamMinMax: {x: 0.2, y: 1}
+  pattern1Count: 8
+  pattern1Reload: 1
+  pattern1Missile: {fileID: 2002745135953532732, guid: 38395407bebb7d84a8cdb1831e3d0a45, type: 3}
+  pattern2Count: 5
+  pattern2Reload: 0.8
+  pattern2Missile: {fileID: 2002745135953532732, guid: b9dc4128438d42048bc21afa22e80c78, type: 3}
+  pattern3Count: 40
+  pattern3Reload: 0.3
+  pattern3Missile: {fileID: 2002745135953532732, guid: 072e89acc20d496409effe68bd3108ef, type: 3}
+  pattenrChangeTime: 1
 --- !u!61 &1707802051588226130
 BoxCollider2D:
   m_ObjectHideFlags: 0
