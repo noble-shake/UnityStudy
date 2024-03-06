@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SocialPlatforms.Impl;
+using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 public class GameManager : MonoBehaviour
 {
@@ -45,10 +48,26 @@ public class GameManager : MonoBehaviour
 
     [Header("Score")]
     [SerializeField] TMP_Text textScore;
-    float score;
+    int score;
+
+    [Header("Game Over Menu")]
+
+    [SerializeField] GameObject objGameoverMenu;
+    [SerializeField] TMP_Text textGameover;
+    [SerializeField] TMP_InputField iFGameover;
+    [SerializeField] Button btnGameover;
+    int rank = -1;
+    string keyRankData = "rankData";
+
+    public class cRank {
+        public int score = 0;
+        public string name = "";
+    }
+    List<cRank> listRanks = new List<cRank>(); // 0 ~ 9 ranks
+
 
     private void Awake()
-    {
+    { 
         // SingleTon ~ GameManger is Only One Object
         if (Instance == null)
         {
@@ -57,7 +76,63 @@ public class GameManager : MonoBehaviour
         else { 
             Destroy(this);
         }
+
+        initGameoverMenu();
     }
+
+    private void initGameoverMenu() {
+        if (objGameoverMenu.activeSelf == true) {
+            objGameoverMenu.SetActive(false);
+        }
+        btnGameover.onClick.AddListener(saveAndNextScene); // lambda or onclick function
+        //btnGameover.onClick.AddListener(Test1);
+        //btnGameover.onClick.AddListener(delegate { Test2(1); });
+        //btnGameover.onClick.AddListener(() => Test2(1));
+    }
+
+    private void initRank()
+    {
+        // JSON
+        // JsonConvert // In Unity, this Class will convert unity variables to TEXTT
+        // jsonutilty (unity official) 는 list 내부에 있는 내용을 파싱 할 수 없는 문제가 있음.
+        // 퍼포먼스는 unity 께 더 좋긴 함.
+        //string value = JsonConvert.SerializeObject(listRanks);
+        //listRanks = JsonConvert.DeserializeObject<List<cRank>>(value);
+        string rankValue = PlayerPrefs.GetString(keyRankData, string.Empty); // key, default
+        if (rankValue == string.Empty)
+        {
+            int count = 10;
+            for (int i = 0; i < count; i++)
+            {
+                listRanks.Add(new cRank());
+            }
+            rankValue = JsonConvert.SerializeObject(listRanks);
+            PlayerPrefs.SetString(keyRankData, rankValue);
+
+        }
+        else {
+            listRanks = JsonConvert.DeserializeObject<List<cRank>>(rankValue);
+        }
+
+    }
+
+    private int GetRank(int _score) {
+        int count = listRanks.Count;
+        for (int iNum = 0; iNum < count; iNum++) { 
+            cRank rank = listRanks[iNum];
+            if (rank.score < _score) {
+                return iNum + 1;
+            }
+        }
+
+        return -1;
+    }
+
+    private void saveAndNextScene() {
+
+        
+    }
+
 
     private void Start()
     {
@@ -298,7 +373,29 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        textScore.text = score.ToString("D8");
+        //textScore.text = score.ToString("D8");
+        textScore.text = score.ToString("D2");
 
+    }
+
+
+    // on click button -> 변수 2개 이상 사용이 안됨, 참조도 안됨, 코드로 하는게 좋다.
+    public void Test1() {
+        Debug.Log("Test1");
+    }
+
+    public void Test2(int _value)
+    {
+        Debug.Log($"Test2 {_value}");
+    }
+
+    public void Test3(float _value)
+    {
+        Debug.Log("Test3");
+    }
+
+    public void Test4(bool _value)
+    {
+        Debug.Log("Test4");
     }
 }
