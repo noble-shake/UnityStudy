@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SocialPlatforms.Impl;
@@ -104,7 +105,7 @@ public class GameManager : MonoBehaviour
             int count = 10;
             for (int i = 0; i < count; i++)
             {
-                listRanks.Add(new cRank());
+                listRanks.Add(new cRank()); 
             }
             rankValue = JsonConvert.SerializeObject(listRanks);
             PlayerPrefs.SetString(keyRankData, rankValue);
@@ -116,7 +117,9 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private int GetRank(int _score) {
+    // If Player Dead, current rank check
+    private int GetRank() {
+        int _score = score;
         int count = listRanks.Count;
         for (int iNum = 0; iNum < count; iNum++) { 
             cRank rank = listRanks[iNum];
@@ -124,13 +127,48 @@ public class GameManager : MonoBehaviour
                 return iNum + 1;
             }
         }
-
         return -1;
     }
 
     private void saveAndNextScene() {
+        // If In rank, name / score 를 rankList에 저장해두고 11등은 삭제
+        // not in rnak, 다른씬으로 이동 (메인 씬)
+                                    
+        int currentRank = GetRank();
 
-        
+        if (currentRank != -1)
+        {
+            cRank newRank = new cRank() { score = score, name = iFGameover.text };
+            Debug.Log(newRank.score);
+            Debug.Log(newRank.name);
+            listRanks.Insert(currentRank - 1, newRank);
+            int count = listRanks.Count;
+            listRanks.RemoveAt(count - 1);
+
+            string saveValue = JsonConvert.SerializeObject(listRanks);
+            PlayerPrefs.SetString(keyRankData, saveValue);
+        }
+
+        //int count = listRanks.Count;
+        //for (int iNum = 0; iNum < count; iNum++)
+        //{
+        //    cRank rank = listRanks[iNum];
+        //    if (rank.score < score)
+        //    {
+        //        cRank newRank = new cRank() { score = score, name = textGameover.text };
+        //        listRanks.Insert(iNum + 1, newRank);
+        //        listRanks.RemoveAt(count);
+        //        break;
+        //    }
+        //}
+
+        //SceneManager.LoadScene // 한 프레임 내에 다른 씬을 로드한다. - 이제 아무도 안씀
+        // LoadSceneAsync // 로드가 완료될떄까지 진행 
+        // Scene Number  / Scene Name (not recommended)
+
+        // SceneManager.LoadSceneAsync((int)SceneNums.MainScene); 
+
+
     }
 
 
@@ -376,6 +414,23 @@ public class GameManager : MonoBehaviour
         //textScore.text = score.ToString("D8");
         textScore.text = score.ToString("D2");
 
+    }
+
+    public void GameOver() {
+        int rank = GetRank();
+        if (rank != -1)
+        {
+            textGameover.text = $"{rank} 등 달성!";
+            iFGameover.gameObject.SetActive(true);
+
+        }
+        else {
+            textGameover.text = "순위 권 내에 들지 못했습니다.";
+            iFGameover.gameObject.SetActive(false);                                                                                                                                                                     
+        }
+
+        objGameoverMenu.gameObject.SetActive(true);
+        iFGameover.Select();
     }
 
 

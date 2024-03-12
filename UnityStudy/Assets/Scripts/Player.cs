@@ -238,6 +238,7 @@ public class Player : MonoBehaviour
 
         if (hp <= 0)
         {
+            GameManager.Instance.GameOver();
             destroyFunction();
         }
         else
