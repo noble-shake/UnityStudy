@@ -14,6 +14,8 @@ public static class Tool {
     public static string GetGameTag(GameTag _value) {
         return _value.ToString();
     }
+
+    public static bool IsEnterFirstScene = false;
 }
 
 // just research.

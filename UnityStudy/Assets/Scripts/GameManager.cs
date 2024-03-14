@@ -73,7 +73,12 @@ public class GameManager : MonoBehaviour
 
 
     private void Awake()
-    { 
+    {
+        if (Tool.IsEnterFirstScene == false) {
+            SceneManager.LoadScene((int)SceneNums.MainScene);
+            return;
+        }
+
         // SingleTon ~ GameManger is Only One Object
         if (Instance == null)
         {
