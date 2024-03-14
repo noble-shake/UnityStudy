@@ -9,6 +9,11 @@ using UnityEngine.SocialPlatforms.Impl;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
+public enum SceneNums
+{
+    MainScene,
+    PlayScene,
+}
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -166,7 +171,7 @@ public class GameManager : MonoBehaviour
         // LoadSceneAsync // 로드가 완료될떄까지 진행 
         // Scene Number  / Scene Name (not recommended)
 
-        // SceneManager.LoadSceneAsync((int)SceneNums.MainScene); 
+        SceneManager.LoadSceneAsync((int)SceneNums.MainScene); 
 
 
     }

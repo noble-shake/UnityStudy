@@ -14,8 +14,8 @@ public class Item : MonoBehaviour
     private Vector3 moveDir;//움직일 방향
     private float speed;//움직이는 속도
 
-    [SerializeField] Vector2 speedMinMax;//랜덤으로 움직일 속도 민,맥스
-                                         //
+    [SerializeField] Vector2 speedMinMax;//랜덤으로 움직일 속도 민,맥스 
+
     [Header("화면 리밋 비율")]
     [SerializeField][Tooltip("최소비율")] Vector2 minScreen;//최소비율
     [SerializeField, Tooltip("최대비율")] Vector2 maxScreen;//최대비율
@@ -30,9 +30,9 @@ public class Item : MonoBehaviour
         //moveDir.Normalize();
         speed = Random.Range(speedMinMax.x, speedMinMax.y);
 
-        cam = Camera.main; // singleton
+        cam = Camera.main;
     }
-    
+
     void Update()
     {
         transform.position += moveDir * speed * Time.deltaTime;
@@ -41,33 +41,25 @@ public class Item : MonoBehaviour
 
     private void checkMovePosition()
     {
-        Vector3 curpos = cam.WorldToViewportPoint(transform.position);
+        Vector3 curPos = cam.WorldToViewportPoint(transform.position);
 
-        // [PROBLEM] screen 넘어가면 드득 거리는걸 해결해야 하는데. 방향 문제 일 것임.
-        if (curpos.x < minScreen.x && moveDir.x < 0)
+        if (curPos.x < minScreen.x && moveDir.x < 0)//왼쪽 
         {
-            //moveDir = -moveDir;
-            // normal mapping -> 항상 면의 수직 방향값. ex) CameraLight reflect
-            // https://docs.unity3d.com/Manual/StandardShaderMaterialParameterNormalMap.html
-
             moveDir = Vector3.Reflect(moveDir, Vector3.left);
         }
-        else if (curpos.x > maxScreen.x && moveDir.x > 0)
+        else if (curPos.x > maxScreen.x && moveDir.x > 0)//오른쪽
         {
             moveDir = Vector3.Reflect(moveDir, Vector3.right);
         }
 
-        if (curpos.y < minScreen.y && moveDir.y < 0)
-        {
-            moveDir = Vector3.Reflect(moveDir, Vector3.up);
-        }
-        else if (curpos.y > maxScreen.y && moveDir.y > 0)
+        if (curPos.y < minScreen.y && moveDir.y < 0)//아래
         {
             moveDir = Vector3.Reflect(moveDir, Vector3.down);
         }
-
-        Vector3 fixedpos = cam.ViewportToWorldPoint(curpos);
-        transform.position = fixedpos;
+        else if (curPos.y > maxScreen.y && moveDir.y > 0)//위
+        {
+            moveDir = Vector3.Reflect(moveDir, Vector3.up);
+        }
     }
 
     public eItemType GetItemType()
